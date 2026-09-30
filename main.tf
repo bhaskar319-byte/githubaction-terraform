@@ -1,16 +1,13 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 6.0"
-    }
-  }
-}
-
 provider "aws" {
-  region = "ap-south-1"
+  region = var.aws_region
 }
 
-resource "aws_s3_bucket" "terraform_test" {
-  bucket = "my-terraform-oidc-test-bucket-12345"
+resource "aws_acm_certificate" "ssl" {
+  domain_name       = var.domain_name
+  validation_method = "DNS"
+
+  tags = {
+    Name      = var.domain_name
+    ManagedBy = "Terraform"
+  }
 }
